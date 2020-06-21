@@ -42,13 +42,12 @@
             background-color: rgba(238, 238, 238, 0.808);
         }
 
-        html[data-theme="darktheme"] input.form-control {
+        html[data-theme="darktheme"] input.form-control{
             border: none;
             background-color: rgba(238, 238, 238, 0.425);
             color: #eee;
         }
-
-        html[data-theme="darktheme"] input::placeholder {
+        html[data-theme="darktheme"] input::placeholder{
             color: #ddd;
         }
 
@@ -81,12 +80,12 @@
             color: #fff;
         }
 
-        html[data-theme="darktheme"] .btn-sm.btn-light {
+        html[data-theme="darktheme"] .btn-sm.btn-light{
             background-color: transparent;
             color: #fff;
         }
 
-        html[data-theme="darktheme"] .btn-sm.btn-light:hover {
+        html[data-theme="darktheme"] .btn-sm.btn-light:hover{
             background-color: rgba(255, 255, 255, 0.212);
         }
 
@@ -102,23 +101,21 @@
             padding: 0.7rem 1.2rem;
 
         }
-
-        html[data-theme="darktheme"] li.list-item {
-            border-color: #999696c2;
+        html[data-theme="darktheme"] li.list-item{
+            border-color:#999696c2 ;
         }
-
+        
 
         button.close {
             font-size: 0.9rem;
         }
 
-
+        
 
         .card-footer {
             display: none;
         }
-
-        .card-footer span {
+        .card-footer  span{
             padding-top: 3px;
         }
 
@@ -170,14 +167,11 @@
         var doneTask = document.querySelector("#doneTask");
         var undoneTask = document.querySelector("#undoneTask");
 
-        // 資料定義
+        // 資料處理
         var data = [];
         // 新增資料
         function addTodoList() {
-            data.push({
-                text: input.value,
-                isDone: false
-            });
+            data.push(input.value);
             console.log('click', data);
             render();
         }
@@ -194,16 +188,17 @@
             render();
         }
 
-        // checkbox 資料 
+        var doneNum = 0;
+        // checkbox 綁定click的函式 
         function checkTodoList(e) {
-            var checkboxIndex = e.id.replace('check', '')
             if (e.checked) {
-                data[checkboxIndex].isDone = true;
-
+                console.log('check');
+                doneNum++;
             } else {
-                data[checkboxIndex].isDone = false;
+                console.log('uncheck');
+                doneNum--;
             }
-            checkDoneTask();
+            undoTask();
         }
 
 
@@ -216,22 +211,20 @@
         function render() {
             //清除畫面
             todoList.innerHTML = '';
-            //重渲染todoList Data
             data.forEach((item, index) => {
                 todoList.innerHTML = `<li class="list-item">
                             <div class="d-flex">
                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" onclick="checkTodoList(this)" class="custom-control-input" ${item['isDone'] ? 'checked' : ''} id="check${index}" >
-                                    <label class="custom-control-label" for="check${index}">${item.text}
-                                    </label>
+                                    <input type="checkbox" onclick="checkTodoList(this)" class="custom-control-input" id="check${index}" >
+                                    <label class="custom-control-label" for="check${index}">${item}</label>
                                 </div>
                                 <button type="button" class="close ml-auto" aria-label="Close">
                                     <span aria-hidden="true" data-action="remove" data-id="${index}">×</span>
                                 </button>
                             </div>
                         </li>` + todoList.innerHTML;
-            })
 
+            })
 
             //刪除 todolist 事件綁定
             var removeBtn = document.querySelectorAll(".close");
@@ -241,7 +234,6 @@
 
             //清空input
             input.value = "";
-            //count 任務數量
             taskCount.innerText = data.length;
 
             //判斷顯示下方
@@ -251,14 +243,12 @@
                 cardFooter.style.display = "flex";
             }
 
-            //完成 未完成 清單
-            checkDoneTask();
+            //判斷undo
+            undoTask();
         };
 
-        //渲染完成/未完成數量 
-        function checkDoneTask() {
-            var doneTaskArray = data.filter(data => data.isDone);
-            var doneNum = doneTaskArray.length;
+        // 渲染完成/未完成數量 
+        function undoTask() {
             doneTask.innerText = doneNum;
             undoneTask.innerText = data.length - doneNum;
         }
@@ -269,8 +259,10 @@
         switchDark.addEventListener('change', function () {
 
             if (this.checked) {
+                console.log(document.documentElement);
                 document.documentElement.setAttribute('data-theme', 'darktheme');
             } else {
+                console.log('non');
                 document.documentElement.setAttribute('data-theme', 'lighttheme');
             }
         })
