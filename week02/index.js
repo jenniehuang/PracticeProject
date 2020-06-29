@@ -13,8 +13,6 @@ var obj2 ={
         axios.get(this.info.api)
              .then(function (response){
                vm.info.products = response.data.data;
-               console.log(vm.info.products);
-               
                vm.renderHTML();
             })},
     renderHTML: function(){
