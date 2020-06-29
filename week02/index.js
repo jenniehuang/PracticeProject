@@ -13,6 +13,8 @@ var obj2 ={
         axios.get(this.info.api)
              .then(function (response){
                vm.info.products = response.data.data;
+               console.log(vm.info.products);
+               
                vm.renderHTML();
             })},
     renderHTML: function(){
@@ -26,6 +28,7 @@ var obj2 ={
                    <h5 class="card-title">${e.title}</h5>
                    <span class="badge badge-pill ">${e.category}</span>
                    <p class="card-text">${e.content}</p>
+                   <p class="price"><span>$${e.origin_price}</span>特價: $${e.price}</p>
                    <a href="#" class="btn btn-custom"><span>+</span>加入購物車</a>
                </div>
            </div>

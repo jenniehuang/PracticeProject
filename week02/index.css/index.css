@@ -9,7 +9,7 @@ nav {
 }
 
 .container .card {
-  height: 400px;
+  height: 420px;
 }
 
 .container .card .img-top {
@@ -27,6 +27,20 @@ nav {
 
 .container .card .card-body h5 {
   font-weight: 700;
+}
+
+.container .card .card-body p.price {
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 0;
+  margin-top: -5px;
+}
+
+.container .card .card-body p.price span {
+  font-weight: 400;
+  color: #555;
+  text-decoration: line-through;
+  margin-right: 5px;
 }
 
 .container .card .card-body .badge-pill {

@@ -11,7 +11,7 @@ nav {
 
 .container {
     .card {
-        height: 400px;
+        height: 420px;
 
         .img-top {
             width: 100%;
@@ -27,6 +27,18 @@ nav {
 
             h5 {
                 font-weight: 700;
+            }
+            p.price{
+                font-weight: 700;
+                font-size: 20px;
+                margin-bottom: 0;
+                margin-top: -5px;
+                span{
+                    font-weight: 400;
+                    color: #555;
+                    text-decoration: line-through;
+                    margin-right: 5px;
+                }
             }
 
             .badge-pill {
