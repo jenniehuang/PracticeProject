@@ -22,61 +22,53 @@
                 </li>
             </ul>
         </nav>
-
     </header>
 
-    <div class="container py-5">
-        <div class="row mb-2 justify-content-end"> 
-             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
-            data-whatever="@mdo">新增產品</button></div>
-      
+    <div class="container py-5" id="app">
+        <div class="row mb-2 justify-content-end">
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#editModal"
+                @click="openModal('new')">新增產品</button>
+        </div>
         <div class="row" id="productList">
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
-                        <th scope="col">function</th>
+                        <th scope="col">編號</th>
+                        <th scope="col">分類</th>
+                        <th scope="col">產品名稱</th>
+                        <th scope="col">原價</th>
+                        <th scope="col">售價</th>
+                        <th scope="col">是否啟用</th>
+                        <th scope="col">編輯</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
+                    <tr v-for="item in list" :key="item.id">
+                        <th scope="row">{{item.id}}</th>
+                        <td>{{item.category}}</td>
+                        <td>{{item.title}}</td>
+                        <td>{{item.origin_price}}</td>
+                        <td>{{item.price}}</td>
+                        <td>{{item.enabled ? '是' : '否'}}</td>
                         <td>
-                            <button class="btn-sm btn btn-outline-info">edit</button>
-                            <button class="btn-sm btn btn-outline-danger">delete</button>
+                            <button type="button" class="btn-sm btn btn-outline-info" @click="openModal('edit', item )"
+                                data-toggle="modal" data-target="#editModal">編輯</button>
+                            <button class="btn-sm btn btn-outline-danger" data-toggle="modal" data-target="#delModal"
+                                @click=" openModal('delete', item )">刪除</button>
                         </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                        <td>@fat</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td colspan="2">Larry the Bird</td>
-                        <td>@twitter</td>
-                        <td>@twitter</td>
                     </tr>
                 </tbody>
             </table>
 
-  
-        
 
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+
+
+            <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                            <h5 class="modal-title" id="editModalLabel">產品編輯</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -84,22 +76,66 @@
                         <div class="modal-body">
                             <form>
                                 <div class="form-group">
-                                    <label for="recipient-name" class="col-form-label">Recipient:</label>
-                                    <input type="text" class="form-control" id="recipient-name">
+                                    <label for="p-title" class="col-form-label">產品名稱:</label>
+                                    <input type="text" class="form-control" id="p-title" v-model="temptProduct.title">
                                 </div>
                                 <div class="form-group">
-                                    <label for="message-text" class="col-form-label">Message:</label>
-                                    <textarea class="form-control" id="message-text"></textarea>
+                                    <label for="categories"> 產品分類:</label>
+                                    <select name="categories" class="custom-select" v-model="temptProduct.category">
+                                        <option disabled value="">請選擇</option>
+                                        <option :value="item" v-for="item in categories">{{ item }}</option>
+                                    </select> </div>
+                                <div class="form-group">
+                                    <label for="p-content" class="col-form-label">產品內容:</label>
+                                    <textarea class="form-control" id="p-content"
+                                        v-model="temptProduct.content"></textarea>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-6">
+                                        <label for="p-og-price" class="col-form-label">原價:</label>
+                                        <input type="number" class="form-control" id="p-og-price"
+                                            v-model="temptProduct.origin_price">
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="p-price" class="col-form-label">售價:</label>
+                                        <input type="number" class="form-control" id="p-price"
+                                            v-model="temptProduct.price">
+                                    </div>
+                                </div>
+                                <div class="custom-control mt-4 custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" name="isActive" id="isActive"
+                                        v-model="temptProduct.enabled">
+                                    <label class=" custom-control-label" for="isActive">是否啟用</label>
                                 </div>
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Send message</button>
+                            <button type="button" class="btn btn-primary" @click="updateProduct">送出</button>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="modal fade" id="delModal" tabindex="1" role="dialog" aria-labelledby="delModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="delModalLabel">確認是否刪除商品 ?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body text-right">
+                            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
+                                取消
+                            </button>
+                            <button type="button" class="btn btn-danger" @click="delProduct">確定刪除</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
 
         </div>
     </div>
@@ -108,10 +144,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
         integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous">
     </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/3.0.0-beta.18/vue.cjs.js'></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
-
-    <script src="index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="main.js"></script>
 
 
 </body>
