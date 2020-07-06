@@ -5,20 +5,14 @@ var app = new Vue({
     text: '',
     categories: ["韓國泡麵", "日本泡麵", "新加坡泡麵"],
     temptProduct: {
-      title: ''
-      // category: '', 
-      // content: '', 
-      // enabled: true,
-      // origin_price: null ,
-      // price: null
     },
     list: [{
       id: 0,
-      title: '安成湯麵',
+      title: '安城湯麵',
       category: '韓國泡麵',
       content: '韓國第一名泡麵',
       description: '',
-      imageUrl: '',
+      imageUrl: 'https://media.karousell.com/media/photos/products/2016/08/17/_5__1471418825_2df21f9f.jpg',
       enabled: true,
       origin_price: 60,
       price: 45,

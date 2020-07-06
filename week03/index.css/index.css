@@ -67,4 +67,11 @@ nav {
 .container .card .card-body .btn-custom span:hover {
   background-color: #a19472;
 }
+
+@media (min-width: 576px) {
+  .container .modal-dialog {
+    width: 85vw;
+    max-width: 1140px;
+  }
+}
 /*# sourceMappingURL=index.css.map */

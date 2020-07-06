@@ -29,11 +29,11 @@
             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#editModal"
                 @click="openModal('new')">新增產品</button>
         </div>
-        <div class="row" id="productList">
+        <div class="row table-responsive" id="productList">
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th scope="col">編號</th>
+                        <th scope="col" style="width: 15%;" >圖片</th>
                         <th scope="col">分類</th>
                         <th scope="col">產品名稱</th>
                         <th scope="col">原價</th>
@@ -44,7 +44,7 @@
                 </thead>
                 <tbody>
                     <tr v-for="item in list" :key="item.id">
-                        <th scope="row">{{item.id}}</th>
+                        <th scope="row"><img :src="item.imageUrl" alt="" style="width: 100px;"></th>
                         <td>{{item.category}}</td>
                         <td>{{item.title}}</td>
                         <td>{{item.origin_price}}</td>
@@ -63,7 +63,7 @@
 
 
 
-            <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
+            <div class="modal fade " id="editModal" tabindex="-1"  aria-labelledby="editModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -73,40 +73,60 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div class="modal-body">
+                        <div class="modal-body col-12">
                             <form>
-                                <div class="form-group">
-                                    <label for="p-title" class="col-form-label">產品名稱:</label>
-                                    <input type="text" class="form-control" id="p-title" v-model="temptProduct.title">
-                                </div>
-                                <div class="form-group">
-                                    <label for="categories"> 產品分類:</label>
-                                    <select name="categories" class="custom-select" v-model="temptProduct.category">
-                                        <option disabled value="">請選擇</option>
-                                        <option :value="item" v-for="item in categories">{{ item }}</option>
-                                    </select> </div>
-                                <div class="form-group">
-                                    <label for="p-content" class="col-form-label">產品內容:</label>
-                                    <textarea class="form-control" id="p-content"
-                                        v-model="temptProduct.content"></textarea>
-                                </div>
                                 <div class="row">
-                                    <div class="form-group col-6">
-                                        <label for="p-og-price" class="col-form-label">原價:</label>
-                                        <input type="number" class="form-control" id="p-og-price"
-                                            v-model="temptProduct.origin_price">
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <label for="p-title" class="col-form-label">上傳圖片網址:</label>
+                                            <input type="text" class="form-control" id="p-imgURL" v-model="temptProduct.imageUrl">
+                                        </div>
+                                        <div class="img-box">
+                                            <img :src="temptProduct.imgURL" alt="" style="width:100%;">
+                                        </div>
                                     </div>
-                                    <div class="form-group col-6">
-                                        <label for="p-price" class="col-form-label">售價:</label>
-                                        <input type="number" class="form-control" id="p-price"
-                                            v-model="temptProduct.price">
+                                    <div class="col-8">
+
+                                        <div class="form-group">
+                                            <label for="p-title" class="col-form-label">產品名稱:</label>
+                                            <input type="text" class="form-control" id="p-title" v-model="temptProduct.title">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="categories"> 產品分類:</label>
+                                            <select name="categories" class="custom-select" v-model="temptProduct.category">
+                                                <option disabled value="">請選擇</option>
+                                                <option :value="item" v-for="item in categories">{{ item }}</option>
+                                            </select> </div>
+                                        <div class="form-group">
+                                            <label for="p-content" class="col-form-label">產品內容:</label>
+                                            <textarea class="form-control" id="p-content"
+                                                v-model="temptProduct.content"></textarea>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-6">
+                                                <label for="p-og-price" class="col-form-label">原價:</label>
+                                                <input type="number" class="form-control" id="p-og-price"
+                                                    v-model="temptProduct.origin_price">
+                                            </div>
+                                            <div class="form-group col-6">
+                                                <label for="p-price" class="col-form-label">售價:</label>
+                                                <input type="number" class="form-control" id="p-price"
+                                                    v-model="temptProduct.price">
+                                            </div>
+                                        </div>
+                                        <div class="custom-control mt-4 custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" name="isActive" id="isActive"
+                                                v-model="temptProduct.enabled">
+                                            <label class=" custom-control-label" for="isActive">是否啟用</label>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="custom-control mt-4 custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" name="isActive" id="isActive"
-                                        v-model="temptProduct.enabled">
-                                    <label class=" custom-control-label" for="isActive">是否啟用</label>
-                                </div>
+                           
+                              
+                                 
+                                  
+                              
+                     
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -146,6 +166,13 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="main.js"></script>
+    <script>
+        // Add the following code if you want the name of the file appear on select
+        $(".custom-file-input").on("change", function() {
+          var fileName = $(this).val().split("\\").pop();
+          $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+        </script>
 
 
 </body>

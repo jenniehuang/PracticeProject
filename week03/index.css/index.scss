@@ -69,6 +69,13 @@ nav {
             }
         }
     }
+@media (min-width: 576px){
+    .modal-dialog{
+        width: 85vw;
+        max-width: 1140px;
+
+    }
+}
 
 
 }
