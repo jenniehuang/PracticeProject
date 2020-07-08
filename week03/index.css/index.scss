@@ -28,12 +28,14 @@ nav {
             h5 {
                 font-weight: 700;
             }
-            p.price{
+
+            p.price {
                 font-weight: 700;
                 font-size: 20px;
                 margin-bottom: 5px;
                 margin-top: -5px;
-                span{
+
+                span {
                     font-weight: 400;
                     color: #555;
                     text-decoration: line-through;
@@ -69,13 +71,42 @@ nav {
             }
         }
     }
-@media (min-width: 576px){
-    .modal-dialog{
-        width: 85vw;
-        max-width: 1140px;
-
+    @media (min-width: 576px) {
+        .modal-dialog {
+            width: 85vw;
+            max-width: 1140px;
+        }
     }
 }
 
-
-}
+// .rating {
+//     float:left;
+//     // width:300px;
+// }
+// .rating span { float:right; position:relative; }
+// .rating span input {
+//     position:absolute;
+//     top:0px;
+//     left:0px;
+//     opacity:0;
+// }
+// .rating span label {
+//     display:inline-block;
+//     width:15px;
+//     height:15px;
+//     text-align:center;
+//     color:#FFF;
+//     background:#ccc;
+//     font-size:30px;
+//     margin-right:2px;
+//     line-height:30px;
+//     border-radius:50%;
+//     -webkit-border-radius:50%;
+// }
+// .rating span:hover ~ span label,
+// .rating span:hover label,
+// .rating span.checked label,
+// .rating span.checked ~ span label {
+//     background:#F90;
+//     color:#FFF;
+// }
