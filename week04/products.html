@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="./index.css/index.css" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css'/>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+</head>
+
+<body>
+    <div class="main" id="app">
+
+        <header>
+            <nav class="navbar">
+                <ul class="nav justify-content-between w-100">
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="#">產品管理頁面</a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-outline-light ml-auto d-inline-block" type="button" @click="getData">
+                            取資料
+                        </button>
+                        <button class="btn btn-outline-light ml-auto d-inline-block" type="button" @click="signout">
+                            登出
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+
+        <div class="container py-5">
+            <div class="row mb-2 justify-content-end">
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#editModal"
+                    @click="openModal('new')">新增產品</button>
+            </div>
+            <div class="row table-responsive" id="productList">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="width: 15%;">圖片</th>
+                            <th scope="col">分類</th>
+                            <th scope="col">產品名稱</th>
+                            <th scope="col">星等</th>
+                            <th scope="col">原價</th>
+                            <th scope="col">售價</th>
+                            <th scope="col">是否啟用</th>
+                            <th scope="col">編輯</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="item in products" :key="item.id">
+                            <th scope="row"><img :src="item.imageUrl" alt="" style="width: 100px;"></th>
+                            <td>{{item.category}}</td>
+                            <td>{{item.title}}</td>
+                            <td v-if="item.options">{{item.options.stars}}</td>
+                            <td v-else> </td>
+                            <td>{{item.origin_price}}</td>
+                            <td>{{item.price}}</td>
+                            <td v-if="item.enabled" class="text-success "><i class="fas fa-check"></i></td>
+                            <td v-else class="text-danger" ><i class="fas fa-times"></i></td>
+                            <td>
+                                <button type="button" class="btn-sm btn btn-outline-info"
+                                    @click="openModal('edit', item )" 
+                                    data-target="#editModal">編輯</button>
+                                <button class="btn-sm btn btn-outline-danger" data-toggle="modal"
+                                    data-target="#delModal" @click=" openModal('delete', item )">刪除</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+
+
+                <div class="modal fade " id="editModal" tabindex="-1" aria-labelledby="editModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editModalLabel">產品編輯</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body col-12">
+                                <form>
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <!-- <div class="form-group" v-for="(item, index) in temptProduct.imageUrl" :key="index"  >
+                                                <label for="p-title" class="col-form-label">上傳圖片網址:</label>
+                                                <input v-model="temptProduct.imageUrl[index]" type="text" 
+                                                class="form-control" id="p-imgURL" >
+                                              
+                                            </div> -->
+                                            <div v-for="i in 1" :key="i + 'img'" class="form-group">
+                                                <label :for="'img' + i">輸入圖片網址</label>
+                                                <input :id="'img' + i" v-model="temptProduct.imageUrl[i - 1]" type="text" class="form-control"
+                                                  placeholder="請輸入圖片連結">
+                                              </div>
+                                            <div class="img-box" >
+                                                <img :src="temptProduct.imageUrl[0]" alt="" style="width:100%;">
+                                            </div>
+                                        </div>
+                                        <div class="col-8">
+
+                                            <div class="form-group">
+                                                <label for="p-title" class="col-form-label">產品名稱:</label>
+                                                <input type="text" class="form-control" id="p-title"
+                                                    v-model="temptProduct.title">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="categories"> 產品分類:</label>
+                                                <select name="categories" class="custom-select"
+                                                    v-model="temptProduct.category">
+                                                    <option disabled value="">請選擇</option>
+                                                    <option :value="item" v-for="item in categories">{{ item }}</option>
+                                                </select> </div>
+                                            <div class="form-group">
+                                                <label for="p-content" class="col-form-label">產品內容:</label>
+                                                <textarea class="form-control" id="p-content"
+                                                    v-model="temptProduct.content"></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="p-content" class="col-form-label">產品敘述:</label>
+                                                <textarea class="form-control" id="p-content"
+                                                    v-model="temptProduct.description"></textarea>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-6">
+                                                    <label for="p-og-price" class="col-form-label">原價:</label>
+                                                    <input type="number" class="form-control" id="p-og-price"
+                                                        v-model="temptProduct.origin_price">
+                                                </div>
+                                                <div class="form-group col-6">
+                                                    <label for="p-price" class="col-form-label">售價:</label>
+                                                    <input type="number" class="form-control" id="p-price"
+                                                        v-model="temptProduct.price">
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <p>評價星等</p>
+
+                                                <div class="rating d-flex" v-if="temptProduct.options" >
+                                                    <span class="custom-control custom-radio mr-2"><input
+                                                            class="custom-control-input" type="radio" name="rating"
+                                                            id="str5" value="5"
+                                                            v-model="temptProduct.options.stars"><label
+                                                            class="custom-control-label" for="str5">5</label></span>
+                                                    <span class="custom-control custom-radio mr-2"><input
+                                                            class="custom-control-input" type="radio" name="rating"
+                                                            id="str4" value="4"
+                                                            v-model="temptProduct.options.stars"><label
+                                                            class="custom-control-label" for="str4">4</label></span>
+                                                    <span class="custom-control custom-radio mr-2"><input
+                                                            class="custom-control-input" type="radio" name="rating"
+                                                            id="str3" value="3"
+                                                            v-model="temptProduct.options.stars"><label
+                                                            class="custom-control-label" for="str3">3</label></span>
+                                                    <span class="custom-control custom-radio mr-2"><input
+                                                            class="custom-control-input" type="radio" name="rating"
+                                                            id="str2" value="2"
+                                                            v-model="temptProduct.options.stars"><label
+                                                            class="custom-control-label" for="str2">2</label></span>
+                                                    <span class="custom-control custom-radio mr-2"><input
+                                                            class="custom-control-input" type="radio" name="rating"
+                                                            id="str1" value="1"
+                                                            v-model="temptProduct.options.stars"><label
+                                                            class="custom-control-label" for="str1">1</label></span>
+                                                </div>
+
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            <div class="box">
+
+                                            </div>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" name="isActive"
+                                                    id="isActive" v-model="temptProduct.enabled">
+                                                <label class=" custom-control-label" for="isActive">是否啟用</label>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" @click="updateProduct">送出</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="delModal" tabindex="1" role="dialog" aria-labelledby="delModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="delModalLabel">確認是否刪除{{temptProduct.title}} ?</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body text-right">
+                                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
+                                    取消
+                                </button>
+                                <button type="button" class="btn btn-danger" @click="delProduct">確定刪除</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <pagination :pages="pagination" @push="getData"></pagination>
+
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.js"
+        integrity="sha256-DrT5NfxfbHvMHux31Lkhxg42LY6of8TaYyK50jnxRnM=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="main.js" type="module"></script>
+    <script>
+        // Add the following code if you want the name of the file appear on select
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+    </script>
+
+</body>
+
+</html>
