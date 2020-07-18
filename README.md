@@ -14,3 +14,8 @@ https://jenniehuang.github.io/PracticeProject/week02/
 
 [主線任務]-- 產品管理頁面
 https://jenniehuang.github.io/PracticeProject/week03/
+
+### 第四周
+
+[主線任務]-- Vue 與 API 串接
+https://jenniehuang.github.io/PracticeProject/week04/
