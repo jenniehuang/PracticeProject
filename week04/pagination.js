@@ -29,7 +29,5 @@ export default {
             this.$emit('push', index )
             console.log();
         }
-
-
     }
   }

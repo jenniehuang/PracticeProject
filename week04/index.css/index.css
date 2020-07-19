@@ -91,4 +91,21 @@ li.page-item a {
   color: #fff;
   font-weight: 900;
 }
+
+#loadspinner {
+  width: 100%;
+  position: fixed;
+  background-color: #fff;
+  opacity: 0.8;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+#loadspinner .spinner-grow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
 /*# sourceMappingURL=index.css.map */

@@ -23,14 +23,22 @@ var app = new Vue({
     },
     isNew: true
   },
+  created() {
+    var vm = this ;
+    vm.token = document.cookie
+    .split('; ')
+    .find(row => row.startsWith('temptToken'))
+    .split('=')[1];
+    //若無登入儲存token 則返回 登入畫面
+    if (vm.token === '') {
+      alert('請先登入驗證!')
+      window.location = 'Login.html';
+    }
+    vm.getData();
+  },
   methods: {
     //取得api全部資料
     getData(page = 1){
-      console.log(page);
-      this.token = document.cookie
-      .split('; ')
-      .find(row => row.startsWith('temptToken'))
-      .split('=')[1];
 
     const api = `${apiPath}${uuid}/admin/ec/products?page=${page}`;
     axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;
@@ -38,7 +46,17 @@ var app = new Vue({
     axios.get(api).then((response) => {
         this.products = response.data.data;
         this.pagination = response.data.meta.pagination;
-      })
+       
+        console.log('dd');
+        $('#loadspinner').fadeOut(2000);
+      }).catch((error) => {
+        if(error.response.data.message =="Unauthenticated." ){
+          alert('未通過驗證,請重新登入')
+          window.location = 'Login.html';
+        }
+        console.log(error.response.data.message);
+     
+      });
     },  
     openModal(situation, item) {
       var vm = this;
@@ -77,6 +95,7 @@ var app = new Vue({
     },
     updateProduct() {
      //新增產品
+     $('#loadspinner').fadeIn(300);
      const vm = this;
      let api = `${apiPath}${uuid}/admin/ec/product`;
      let httpMethod = 'post';
@@ -96,6 +115,7 @@ var app = new Vue({
      })
     },
     delProduct() {
+      $('#loadspinner').fadeIn(300);
       var vm = this;
       const api = `${apiPath}${uuid}/admin/ec/product/${vm.temptProduct.id}`;
 
@@ -114,6 +134,3 @@ var app = new Vue({
     }
   }
 });
-
-app.getData();
-
