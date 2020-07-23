@@ -1,0 +1,111 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap");
+body {
+  background-color: #fff;
+  font-family: 'Noto Sans TC', 'Sriracha', 'Roboto', sans-serif;
+}
+
+nav {
+  background-color: #87c5c5;
+}
+
+.container .card {
+  height: 420px;
+}
+
+.container .card .img-top {
+  width: 100%;
+  height: 200px;
+  background-color: #fff;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.container .card .card-body {
+  background-color: #f7f4ef;
+}
+
+.container .card .card-body h5 {
+  font-weight: 700;
+}
+
+.container .card .card-body p.price {
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 5px;
+  margin-top: -5px;
+}
+
+.container .card .card-body p.price span {
+  font-weight: 400;
+  color: #555;
+  text-decoration: line-through;
+  margin-right: 5px;
+}
+
+.container .card .card-body .badge-pill {
+  background-color: #87c5c5;
+  display: inline-block;
+  font-weight: 400;
+  font-size: 15px;
+}
+
+.container .card .card-body .btn-custom {
+  background-color: transparent;
+  padding: 0;
+}
+
+.container .card .card-body .btn-custom span {
+  background-color: #e0d0a8;
+  display: inline-block;
+  font-size: 20px;
+  width: 30px;
+  margin-right: 10px;
+  border-radius: 50%;
+}
+
+.container .card .card-body .btn-custom span:hover {
+  background-color: #a19472;
+}
+
+@media (min-width: 576px) {
+  .container .modal-dialog {
+    width: 85vw;
+    max-width: 1140px;
+  }
+}
+
+li.page-item {
+  background-color: transparent;
+}
+
+li.page-item.active a.page-link {
+  background-color: beige;
+  color: cadetblue;
+}
+
+li.page-item a {
+  background-color: transparent;
+  border-radius: none;
+  border: none;
+  color: #fff;
+  font-weight: 900;
+}
+
+#loadspinner {
+  width: 100%;
+  position: fixed;
+  background-color: #fff;
+  opacity: 0.8;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+#loadspinner .spinner-grow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+/*# sourceMappingURL=index.css.map */
