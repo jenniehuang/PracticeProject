@@ -31,8 +31,8 @@
     <div class="container py-5">
       <div class="col-12 col-md-8">
         <h4>填寫資料</h4>
-        <validation-observer v-slot="{ invalid }">
-          <form >
+        <validation-observer v-slot="{ invalid , handleSubmit }">
+          <form @submit.prevent="handleSubmit(submitForm)" >
           <validation-provider rules="required" v-slot="{ errors, classes }">
             <label for="inputname">姓名 :</label>
             <input :class="classes" name="name"  v-model="name" type="text" class="form-control" id="inputname">
@@ -65,7 +65,7 @@
             <span class="invalid-feedback">{{ errors[0] }}</span>
           </validation-provider>
 
-          <validation-provider rules="" v-slot="{ errors }">
+          <validation-provider rules="" v-slot="{ errors }"> 
             <label for="inputnotes">備註 :</label>
             <textarea  v-model="notes" name="notes" type="text" class="form-control" id="inputnotes"></textarea>
           </validation-provider>
@@ -85,7 +85,14 @@
   </script>
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vee-validate/3.3.0/vee-validate.full.min.js"></script>
+  <!-- <script src="zh_TW.js"></script> -->
+  <script type="module">
+    import zh_TW from './zh_TW.js';
+    VeeValidate.localize('tw', zh_TW );
+    
+    
 
+  </script>
   <script>
     Vue.component('ValidationProvider', VeeValidate.ValidationProvider);
     VeeValidate.configure({
@@ -104,12 +111,19 @@
         deliverWay: "",
         notes: ""
       },
+      methods: {
+        submitForm() {
+         alert('送出表單')
+        }
+      },
       created() {
+
 
       }
 
     });
   </script>
+
 
 </body>
 
